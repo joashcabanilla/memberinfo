@@ -1,0 +1,180 @@
+body, .wrapper{
+    background-color: #e9ecef !important;
+}
+
+body::-webkit-scrollbar {
+    width: 5px;
+}
+  
+body::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #343a40;
+    border-radius: 10px;
+}
+
+label,
+input,
+button,
+select,
+textarea,
+a,
+p{
+    font-size: 1.1rem !important;
+}
+
+select,
+input,
+textarea{
+    font-weight: 500 !important;
+    color: #000000 !important;
+}
+
+.modal-closeIcon{
+    font-size: 2rem !important;
+} 
+
+.card-primary.card-outline {
+    border-top: 3px solid #2b7d62;
+}
+
+.card-primary:not(.card-outline)>.card-header,
+.bg-primary {
+    background:  #2b7d62 !important;
+}
+
+.text-primary{
+    color: #2b7d62 !important; 
+}
+
+.border-primary{
+    border-color: #2b7d62 !important; 
+}
+
+.select2-container--bootstrap4 .select2-results>.select2-results__options::-webkit-scrollbar-thumb {
+    background-color: #6c757d;
+    border-radius: 10px;
+}
+
+.select2-container--bootstrap4 .select2-results>.select2-results__options::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.select2-container--bootstrap4 .select2-results>.select2-results__options::-webkit-scrollbar {
+    width: 5px;
+}
+
+.btn-primary,
+.btn-primary:focus,
+.swal2-styled.swal2-confirm,
+.swal2-styled.swal2-confirm:focus{
+    background-color: #2b7d62;
+    border: none;
+}
+
+.btn-primary:hover,
+.swal2-styled.swal2-confirm:hover{
+    background-color: #256952 !important;
+}
+
+.btn-primary:active,
+.swal2-styled.swal2-confirm:active{
+    background-color: #205a46 !important
+}
+
+.icheck-success>input:first-child:not(:checked):not(:disabled):hover+label::before{
+    border-color: #2b7d62 !important;
+}
+.icheck-success>input:first-child:checked+label::before{
+    background-color: #2b7d62 !important;
+    border-color: #2b7d62 !important;
+}
+
+.toast-success{
+    background-color:#2b7d62 !important;
+}
+
+.select2-container--bootstrap4 .select2-results__option--highlighted{
+    font-weight: 700 !important;
+    background-color:#2b7d62 !important;
+}
+
+.select2-selection__choice{
+    font-weight: 700 !important;
+    background-color:#2b7d62 !important;
+    color: #fff !important;
+}
+
+.dataTable thead{
+    background: #2b7d62 !important;
+    color: #ffffffff !important;
+}
+
+.dataTable thead th{
+    font-size: 1.1rem !important;
+    text-align: center !important;
+}
+
+.dataTable{
+    width: 100% !important;
+}
+
+.container-verifier .main-card{
+    width: 100% !important;
+}
+
+.container-verifier .main-card{
+    background-color: #004b00 !important;
+}
+
+.container-verifier h3{
+    color: #abdbe3;
+}
+
+.container-verifier h2{
+    font-style: italic;
+}
+
+.memcard,
+.norecord-verifier{
+    background-color: #d9edf7 !important;
+}
+
+.memberName{
+    color: #1f2d3d !important;
+    font-style: normal;
+}
+
+.black{
+    color: #000000 !important;
+}
+
+.memcard .voteBtn,
+.memcard .nonMigs{
+    cursor: pointer !important;
+}
+
+.container-verifier #verifierForm *{ 
+font-size: 1.2rem !important;
+}
+
+.modal-closeIcon{
+    font-size: 2rem !important;
+} 
+
+.bootbox *{
+    font-size: 0.95rem !important;
+}
+.bootbox .modal-header,
+.bootbox .modal-body,
+.bootbox .modal-footer{
+    padding: 0.5rem !important;
+}
+
+@media (min-width: 992px) {
+    .container-verifier .main-card{
+        width: 50% !important;
+    }
+}
