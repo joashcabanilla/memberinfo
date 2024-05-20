@@ -260,6 +260,12 @@ let memberTable = $('#memberTable').on('init.dt', function () {
         complete: () => {
             $(".dataTables_processing").addClass("d-none");
         }
+    },
+    rowCallback: function(row, data, index) {   
+        let status = $(row).find(".editBtn").data("status");
+        if(status == "updated"){
+            $(row).addClass("bg-danger");
+        }
     }
 });
 
@@ -488,6 +494,14 @@ $("#memberForm").submit((e) => {
 $('#memberTable').on('click', '.editBtn', (e) => {
     let memberId = $(e.currentTarget).data("id");
     $("#memberModalLabel").text("Update Member's Info");
+    $("#region").val("").trigger("change");
+    $("#province").val("").trigger("change");
+    $("#city").val("").trigger("change");
+    $("#barangay").val("").trigger("change");
+    $("#province").removeAttr("data-province_code");
+    $("#city").removeAttr("data-citymun_code");
+    $("#barangay").removeAttr("data-barangay_code");
+
     $.LoadingOverlay("show");
     $.ajax({
         type: "POST",
@@ -517,7 +531,7 @@ $('#memberTable').on('click', '.editBtn', (e) => {
                 $("#barangay").data("barangay_code", res.barangay_code);
             }
             
-            $("#street,#subdivision,#area").attr("disabled", false);
+            $("#street,#subdivision,#area,#unitFloor").attr("disabled", false);
             $("#memberForm").find("input[type='hidden']").attr("disabled", false);
             $("#memberModal").modal("show");
         }

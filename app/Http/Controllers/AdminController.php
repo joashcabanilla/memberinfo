@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 //Classes
 use App\Classes\DataTableClass;
+use App\Classes\ReportClass;
 
 //Model
 use App\Models\User;
@@ -19,7 +20,7 @@ use App\Models\BarangayModel;
 
 class AdminController extends Controller
 {
-    protected $data, $datatable, $userModel, $memberModel, $regionModel, $provinceModel, $cityModel, $barangayModel;
+    protected $data, $datatable, $userModel, $memberModel, $regionModel, $provinceModel, $cityModel, $barangayModel, $reportClass;
 
     public function __construct()
     {
@@ -32,6 +33,7 @@ class AdminController extends Controller
         $this->provinceModel = new ProvinceModel();
         $this->cityModel = new CityModel();
         $this->barangayModel = new BarangayModel();
+        $this->reportClass = new ReportClass();
     }
 
     function Users(){
@@ -52,6 +54,15 @@ class AdminController extends Controller
             }
         }
         $this->data["tables"] = $tableList;
+
+        $this->data['reportList'] = [
+            "ListOfEncodedMembers" => "List Of Encoded Members"
+        ];
+
+        $userList = $this->userModel->getUser();
+        foreach($userList as $user){
+            $this->data['userList'][$user->id] = $user->name;
+        }
 
         return view('Components.Maintenance',$this->data);
     }
@@ -142,5 +153,9 @@ class AdminController extends Controller
 
     function getMember(Request $request){
         return $this->memberModel->getMember($request->id);
+    }
+
+    function generateReport(Request $request){
+        return $this->reportClass->generateExcel($request->all());
     }
 }

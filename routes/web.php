@@ -46,6 +46,7 @@ Route::prefix('admin')->middleware(['auth'])->group(
         Route::post('/getBarangay', [AdminController::class, 'getBarangay']);
         Route::post('/createUpdateMember', [AdminController::class, 'createUpdateMember']);
         Route::post('/getMember', [AdminController::class, 'getMember']);
+        Route::post('/generateReport', [AdminController::class, 'generateReport'])->name('admin.report');
     }
 );
 

@@ -28,6 +28,7 @@ class MemberModel extends Model
         'province_code',
         'citymun_code',
         'barangay_code',
+        'unit_floor_no',
         'street',
         'subdivision',
         'area',
@@ -73,6 +74,7 @@ class MemberModel extends Model
             DB::raw("CONCAT(COALESCE(firstname, ''), ' ', COALESCE(middlename, ''), ' ', COALESCE(lastname, '')) AS name"),
             "suffix",
             "full_address",
+            "updated_by"
         );
 
         if(!empty($data->filterSearch)){

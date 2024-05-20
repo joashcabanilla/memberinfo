@@ -227,6 +227,14 @@
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-12">
+                                <label for="street">Unit Floor No.</label>
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Unit Floor No. *" id="unitFloor" name="unit_floor_no" autocomplete="false" required>
+                                    <div class="invalid-feedback font-weight-bold"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-12">
                                 <label for="street">Street</label>
                                 <div class="form-group">
                                     <input type="text" class="form-control" placeholder="Street *" id="street" name="street" autocomplete="false" required>

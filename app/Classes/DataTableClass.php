@@ -174,8 +174,9 @@ class DataTableClass
 
             ['db' => 'full_address', 'dt' => 5],
 
-            ['db' => 'id', 'dt' => 6, 'formatter' => function($d){
-                return "<button type='submit' class='btn btn-sm btn-primary elevation-1 editBtn' data-id='".$d."'><i class='fas fa-edit' aria-hidden='true'></i></button>";
+            ['db' => 'id', 'dt' => 6, 'formatter' => function($d,$drow){
+                $status = $drow["updated_by"] != 0 ? "updated" : "notupdated";
+                return "<button type='submit' class='btn btn-sm btn-primary elevation-1 editBtn' data-status='".$status."' data-id='".$d."'><i class='fas fa-edit' aria-hidden='true'></i></button>";
             }],
         ];
 
