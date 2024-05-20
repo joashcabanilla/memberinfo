@@ -510,7 +510,10 @@ $('#memberTable').on('click', '.editBtn', (e) => {
         success: (res) => {
             $.LoadingOverlay("hide");
             for(let key in res){
-                $("#memberForm").find("[name='"+key+"']").val(res[key]).attr("disabled", true);
+                if(key != "updated_by"){
+                    $("#memberForm").find("[name='"+key+"']").val(res[key]).attr("disabled", true);
+                }
+
             }
             $("#memberForm").find("textarea").addClass("font-weight-bold");
             $("#region").attr("disabled", false);
