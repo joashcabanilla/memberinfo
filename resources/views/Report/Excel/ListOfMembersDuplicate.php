@@ -1,6 +1,11 @@
 <?php
     error_reporting(0);
     require_once(app_path('Includes/excel/spreadsheet/Writer.php'));
+
+    function convertEncoding($string) {
+        return iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $string);
+    }
+
     $xls = new Spreadsheet_Excel_Writer();
     $header = $xls->addFormat(array('Size' => 11));
     $header->setLocked();
@@ -66,8 +71,7 @@
         array('Last Name',20),
         array('First Name',20),
         array('Middle Name',20),
-
-        array('Suffix')
+        array('Suffix',15)
     );
 
     $c = $r = 0;
@@ -85,9 +89,9 @@
         $sheet->writeString($r,$c,$data["memid"],$normalC);$c++;
         $sheet->writeString($r,$c,$data["pbno"],$normalC);$c++;
         $sheet->writeString($r,$c,$data["title"],$normal);$c++;
-        $sheet->writeString($r,$c,$data["lastname"],$normal);$c++;
-        $sheet->writeString($r,$c,$data["firstname"],$normal);$c++;
-        $sheet->writeString($r,$c,$data["middlename"],$normal);$c++;
+        $sheet->writeString($r,$c,convertEncoding($data["lastname"]),$normal);$c++;
+        $sheet->writeString($r,$c,convertEncoding($data["firstname"]),$normal);$c++;
+        $sheet->writeString($r,$c,convertEncoding($data["middlename"]),$normal);$c++;
         $sheet->writeString($r,$c,$data["suffix"],$normal);$c++;
         $r++;
     }
