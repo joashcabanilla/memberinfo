@@ -56,7 +56,8 @@ class AdminController extends Controller
         $this->data["tables"] = $tableList;
 
         $this->data['reportList'] = [
-            "ListOfEncodedMembers" => "List Of Encoded Members"
+            "ListOfEncodedMembers" => "List Of Encoded Members",
+            "ListOfMembersDuplicate" => "List Of Members Duplicate",
         ];
 
         $userList = $this->userModel->getUser();

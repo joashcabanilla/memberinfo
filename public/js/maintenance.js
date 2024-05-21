@@ -99,3 +99,11 @@ $("#importDatabaseForm").submit((e) => {
     $("#importDatabaseForm").find("button").attr("disabled", true).removeClass("btn-primary").addClass("btn-success").html("<i class='fa fa-spinner fa-spin text-warning'></i> Inserting Data...");
     insertData(0, csvData.length, "success");
 });
+
+$("#selectReport").change((e) => {
+    let report = $(e.currentTarget).val();
+    $("#selectUser").attr("disabled", false);
+    if(report == "ListOfMembersDuplicate"){
+        $("#selectUser").attr("disabled", true);
+    }
+});

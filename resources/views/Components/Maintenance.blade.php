@@ -104,6 +104,15 @@
 
                                         <div class="col-12">
                                             <div class="form-group">
+                                                <label for="selectFormat">Format</label>
+                                                <select class="form-control" id="selectFormat" name="format">
+                                                    <option value="excel">Excel</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <div class="form-group">
                                                 <button class="btn btn-lg btn-primary font-weight-bold float-right" type="submit">Generate</button>
                                             </div>
                                         </div>
