@@ -58,6 +58,7 @@ class AdminController extends Controller
         $this->data['reportList'] = [
             "ListOfEncodedMembers" => "List Of Encoded Members",
             "ListOfMembersDuplicate" => "List Of Members Duplicate",
+            "ListOfMembersWithUpdatedAddress" => "List Of Members With Updated Address",
         ];
 
         $userList = $this->userModel->getUser();
@@ -157,6 +158,6 @@ class AdminController extends Controller
     }
 
     function generateReport(Request $request){
-        return $this->reportClass->generateExcel($request->all());
+        return $this->reportClass->generateReport($request->all());
     }
 }

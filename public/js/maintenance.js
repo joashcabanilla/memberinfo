@@ -103,7 +103,7 @@ $("#importDatabaseForm").submit((e) => {
 $("#selectReport").change((e) => {
     let report = $(e.currentTarget).val();
     $("#selectUser").attr("disabled", false);
-    if(report == "ListOfMembersDuplicate"){
+    if(report == "ListOfMembersDuplicate" || report == "ListOfMembersWithUpdatedAddress"){
         $("#selectUser").attr("disabled", true);
     }
 });
