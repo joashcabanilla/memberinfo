@@ -136,7 +136,8 @@ class ReportClass
             'street',
             'subdivision',
             'area',
-            'updated_by'
+            'updated_by',
+            'updated_at'
         );
 
         $users = $this->userModel->getUser();
@@ -150,7 +151,7 @@ class ReportClass
         }
 
         $memberInfoList = $memberInfoList->orderBy("member_type")->get();
-        $memberList = $userList = $updateCountList = array();
+        $memberList = $userList = $updateCountList = $totalCountList = array();
         $provinceList = $cityList = $barangayList = array();
 
         foreach($provinces as $province){
@@ -201,7 +202,9 @@ class ReportClass
             ]; 
 
             if(!empty($member->updated_by)){
-                $updateCountList[$member->updated_by][] = $member->id;
+                $dateUpdated = date("m-d-Y", strtotime($member->updated_at));
+                $updateCountList[$member->updated_by][$dateUpdated][] = $member->id;
+                $totalCountList[$member->updated_by][] = $member->id;
             }   
         }
 
@@ -210,6 +213,7 @@ class ReportClass
             $var["title"] = "List Of Encoded Members";
             $var["memberList"] = $memberList;
             $var["updateCountList"] = $updateCountList;
+            $var["totalCountList"] = $totalCountList;
             $var["userList"] = $userList;
 
             return response()->make(view("Report.Excel.ListOfEncodedMember",$var), '200'); 

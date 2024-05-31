@@ -28,6 +28,13 @@
     $subheaderB->setBold();
     $subheaderB->setBorder(1);
 
+    $subheaderNB = $xls->addFormat(array('Size' => 10));
+    $subheaderNB->setLocked();
+    $subheaderNB->setFontFamily('Arial');
+    $subheaderNB->setAlign("left");
+    $subheaderNB->setAlign("vcenter");
+    $subheaderNB->setBold();
+
     $subheaderName = $xls->addFormat(array('Size' => 10));
     $subheaderName->setLocked();
     $subheaderName->setFontFamily('Arial');
@@ -113,23 +120,30 @@
     }
 
     $r+=2;
-    $c = 0;
-    $fields = array(
-        array('NAME',40),
-        array('TOTAL',20),
-    );
-
-    foreach($fields as $fieldinfo):
-        list($caption,$colwidth) = $fieldinfo;
-        $sheet->write($r,$c,$caption,$subheaderB);$c++;
-    endforeach;
-    $r++;
-    foreach($updateCountList as $userId => $data){
+    foreach($updateCountList as $userId => $dataEncoded){
         $c = 0;
-        $sheet->writeString($r,$c,$userList[$userId],$normal);$c++;
-        $sheet->writeString($r,$c,count($data),$normalC);$c++;
+        $sheet->write($r,$c,"Name: ". $userList[$userId],$subheaderNB);
+        $sheet->setMerge($r, $c, $r, $c+1);
+        $c+=2;
+        $sheet->write($r,$c,"Total: ". count($totalCountList[$userId]),$subheaderNB);
+
+        $c = 0;
         $r++;
+        $sheet->write($r,$c,"DATE",$subheaderB);$c++;
+        $sheet->write($r,$c,"TOTAL",$subheaderB);
+
+        
+        $r++;
+        ksort($dataEncoded);
+        foreach($dataEncoded as $date => $total){
+            $c = 0;
+            $sheet->writeString($r,$c,$date,$normalC);$c++;
+            $sheet->writeString($r,$c,count($total),$normalC);$c++;
+            $r++;
+        }
+        $r+=2;
     }
+
     $xls->close();
     die;
 ?>
