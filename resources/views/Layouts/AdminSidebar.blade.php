@@ -23,6 +23,13 @@
                     <p>Member Information</p>
                 </a>
             </li>
+
+            <li class="nav-item mt-2">
+                <a href="{{route("admin.dependents")}}" class="nav-link nav-main-tab tabLink {{$tab != "dependents" ?: "active font-weight-bold"}}">
+                    <i class="nav-icon fas fa-users fa-lg"></i>
+                    <p>Dependents and Beneficiaries</p>
+                </a>
+            </li>
         </ul>
     </nav>
 </div>

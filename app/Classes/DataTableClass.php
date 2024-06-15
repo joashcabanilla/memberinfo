@@ -6,16 +6,21 @@ use Illuminate\Support\Facades\DB;
 //Model
 use App\Models\User;
 use App\Models\MemberModel;
+use App\Models\DependentModel;
+use App\Models\BeneficiariesModel;
+use App\Models\RelationshipModel;
 
 class DataTableClass
 {
-
-    protected $userModel, $memberModel;
+    protected $userModel, $memberModel, $dependentModel, $beneficiariesModel, $relationshipModel;
 
     function __construct()
     {
         $this->userModel = new User();
         $this->memberModel = new MemberModel();
+        $this->dependentModel = new DependentModel();
+        $this->beneficiariesModel = new BeneficiariesModel();
+        $this->relationshipModel = new RelationshipModel();
     }
 
     function getAllDatabaseTable(){
@@ -177,6 +182,114 @@ class DataTableClass
             ['db' => 'id', 'dt' => 6, 'formatter' => function($d,$drow){
                 $status = $drow["updated_by"] != 0 ? "updated" : "notupdated";
                 return "<button type='submit' class='btn btn-sm btn-primary elevation-1 editBtn' data-status='".$status."' data-id='".$d."'><i class='fas fa-edit' aria-hidden='true'></i></button>";
+            }],
+        ];
+
+        $params = array(
+            "var" => $var,
+            "columns" => $columns,
+            "sql" => $query  
+        );
+        
+        return $this->processTable($params);
+    }
+
+    function dependentTable($data){
+        $var = (object) $data;
+        $dependentsNumber = $this->dependentModel->dependentsNumber();
+        $beneficiariesNumber = $this->beneficiariesModel->beneficiariesNumber();
+
+        $query = $this->memberModel->memberTable($var);
+        $columns = [
+            ['db' => 'id', 'dt' => 0,'orderable' => false, 'sortnum'=>true],
+
+            ['db' => 'member_type', 'dt' => 1,'formatter' => function($d){
+                return strtoupper($d);
+            }],
+
+            ['db' => 'memid', 'dt' => 2],
+
+            ['db' => 'pbno', 'dt' => 3],
+
+            ['db' => 'name', 'dt' => 4,'formatter' => function($d,$tableData){
+                $name = $tableData["title"]." ".$d;
+                if(!empty($tableData["suffix"])){
+                    $name = $name." ".$tableData["suffix"];
+                }    
+                return ucwords(strtolower($name));
+            }],
+
+            ['db' => 'id', 'dt' => 5, 'formatter' => function($d,$drow) use($dependentsNumber){
+                return isset($dependentsNumber[$drow["memid"]."-".$drow["pbno"]]) ? $dependentsNumber[$drow["memid"]."-".$drow["pbno"]] : 0;
+            }],
+
+            ['db' => 'id', 'dt' => 6, 'formatter' => function($d,$drow) use($beneficiariesNumber){
+                return isset($beneficiariesNumber[$drow["memid"]."-".$drow["pbno"]]) ? $beneficiariesNumber[$drow["memid"]."-".$drow["pbno"]] : 0;
+            }],
+
+            ['db' => 'id', 'dt' => 7, 'formatter' => function($d,$drow){
+                $memberName = $drow["name"]." ".$drow["suffix"];
+
+                return "<div class='btn-group'>
+                <button type='button' class='btn btn-sm' data-toggle='dropdown'><i class='fas fa-ellipsis-h'></i></button>
+                <div class='dropdown-menu dropdown-menu dropdown-menu-left'>
+                  <a class='dropdown-item dependents-editBtn' style='cursor:pointer;' data-id='".$d."' data-membername='".$memberName."' data-memid='".$drow["memid"]."' data-pbno='".$drow["pbno"]."'><i class='fas fa-edit'></i> Dependents</a> 
+                  <a class='dropdown-item beneficiaries-editBtn' style='cursor:pointer;' data-id='".$d."' data-membername='".$memberName."' data-memid='".$drow["memid"]."' data-pbno='".$drow["pbno"]."'><i class='fas fa-edit'></i> Beneficiaries</a>
+                </div>
+              </div>";
+            }],
+        ];
+
+        $params = array(
+            "var" => $var,
+            "columns" => $columns,
+            "sql" => $query  
+        );
+        
+        return $this->processTable($params);
+    }
+
+    function dependentBeneficiariesTable($data){
+        $var = (object) $data;
+        
+        $relationshipList = $this->relationshipModel->relationshipListTable();
+
+        if($var->action == "dependents"){
+            $query = $this->dependentModel->dependentTable($var);
+        }else{
+            $query = $this->beneficiariesModel->beneficiariesTable($var);
+        }
+
+        $columns = [
+            ['db' => 'id', 'dt' => 0,'orderable' => false, 'sortnum'=>true],
+
+            ['db' => 'name', 'dt' => 1,'formatter' => function($d,$tableData){
+                $suffix = "";
+                if(!empty($tableData["suffix"])){
+                    $suffix = $tableData["suffix"];
+                }    
+                $name = ucwords(strtolower($d))." ".$suffix;
+                return trim($name);
+            }],
+
+            ['db' => 'birthdate', 'dt' => 2, 'formatter' => function($d){
+                return !empty($d) ? date("m/d/Y", strtotime($d)) : "";
+            }],
+
+            ['db' => 'contact_no', 'dt' => 3],
+
+            ['db' => 'relationship', 'dt' => 4, 'formatter' => function($d) use($relationshipList){
+                return $relationshipList[$d];
+            }],
+
+            ['db' => 'id', 'dt' => 5, 'formatter' => function($d){
+                return "<div class='btn-group'>
+                <button type='button' class='btn btn-sm' data-toggle='dropdown'><i class='fas fa-ellipsis-h'></i></button>
+                <div class='dropdown-menu dropdown-menu dropdown-menu-left'>
+                  <a class='dropdown-item editBtn' style='cursor:pointer;' data-id='".$d."'><i class='fas fa-edit'></i> Update</a> 
+                  <a class='dropdown-item deleteBtn' style='cursor:pointer;' data-id='".$d."'><i class='fas fa-trash'></i> Remove</a>
+                </div>
+              </div>";
             }],
         ];
 

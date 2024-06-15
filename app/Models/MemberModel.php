@@ -82,6 +82,8 @@ class MemberModel extends Model
             $query->where(function($q) use($search){
                 $q->orWhereRaw("CONCAT(COALESCE(FirstName, ''), ' ', COALESCE(MiddleName, ''), ' ', COALESCE(LastName, '')) LIKE '%".$search."%'");
                 $q->orWhereRaw("full_address LIKE '%".$search."%'");
+                $q->orWhereRaw("memid LIKE '%".$search."%'");
+                $q->orWhereRaw("pbno LIKE '%".$search."%'");
             });
         }
 

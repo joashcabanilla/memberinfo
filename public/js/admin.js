@@ -22,6 +22,12 @@ $(document).ready((e) => {
         dropdownParent: $('#memberModal'),
         placeholder: '-- Select Barangay --'
     });
+
+    $("#dependent-relationship").select2({
+        theme: 'bootstrap4',
+        dropdownParent: $('#dependentModal'),
+        placeholder: '-- Select Relationship --'
+    });
 });
 
 $(document).on('select2:open', () => {
@@ -537,6 +543,216 @@ $('#memberTable').on('click', '.editBtn', (e) => {
             $("#street,#subdivision,#area,#unitFloor").attr("disabled", false);
             $("#memberForm").find("input[type='hidden']").attr("disabled", false);
             $("#memberModal").modal("show");
+        }
+    });
+});
+
+let dependentTable = $('#dependent-memberTable').on('init.dt', function () {
+    $(".dataTables_wrapper").prepend("<div class='dataTables_processing card font-weight-bold d-none' role='status'>Loading Please Wait...<i class='fa fa-spinner fa-spin text-warning'></i></div>");
+}).DataTable({
+    ordering: false,
+    serverSide: true,
+    dom: 'rtip',
+    columnDefs: [
+        { targets: 0, width: '1%', className: "text-center align-middle font-weight-bold p-2" },
+        { targets: 1, width: '10%', className: "text-center align-middle font-weight-bold p-2" },
+        { targets: 2, width: '10%', className: "text-center align-middle font-weight-bold p-2" },
+        { targets: 3, width: '10%', className: "text-center align-middle font-weight-bold p-2" },
+        { targets: 4, width: '30%', className: "text-left align-middle font-weight-bold p-2" },
+        { targets: 5, width: '5%', className: "text-center align-middle font-weight-bold p-2" },
+        { targets: 6, width: '5%', className: "text-center align-middle font-weight-bold p-2" },
+        { targets: 7, width: '3%', className: "text-center align-middle font-weight-bold p-2" },
+    ],
+    ajax: {
+        url: '/admin/dependentTable',
+        type: 'POST',
+        data: function (d) {
+            d.filterSearch = $("#dependent-memberfilterSearch").val();
+            d.filterMemberType = $("#dependent-memberTypeFilter").val();
+        },
+        beforeSend: () => {
+            $(".dataTables_processing").removeClass("d-none");
+        },
+        complete: () => {
+            $(".dataTables_processing").addClass("d-none");
+        }
+    }
+});
+
+$("#dependent-memberfilterSearch").keyup((e) => {
+    dependentTable.draw();
+});
+
+$("#dependent-memberTypeFilter").change((e) => {
+    dependentTable.draw();
+});
+
+$("#dependent-memberSearchBtn").click((e) => {
+    dependentTable.draw();
+});
+
+$("#dependent-memberClearFilter").click((e) => {
+    $("#dependent-memberTypeFilter,#dependent-memberfilterSearch").val("");
+    dependentTable.draw();
+});
+
+var dependentBeneficiariesTable;
+
+const dependentsBeneficiariesModal = (e,title) => {
+    let memberName = $(e.currentTarget).data("membername");
+    let memid = $(e.currentTarget).data("memid");
+    let pbno = $(e.currentTarget).data("pbno");
+    let member_id = $(e.currentTarget).data("id");
+
+    $("#dependentModalLabel").text(title);
+    $("#dependentModal").find("input[name='membername']").val(memberName);
+    $("#dependentModal").find("input[name='memid']").val(memid);
+    $("#dependentModal").find("input[name='pbno']").val(pbno);
+    $("#dependentModal").find("input[name='member_id']").val(member_id);
+    $("#dependentModal").find(".modalTableContainer").append("<div class='table-responsive'> <table id='dependentBeneficiariesTable' class='table table-hover table-bordered dataTable modalTable'> <thead> <tr> <th>ID</th> <th>Name</th> <th>Birthdate</th> <th>Contact No.</th> <th>Relationship</th> <th>Action</th> </tr></thead></table></div>");
+    $("#dependentModal").modal("show");
+}
+
+$('#dependent-memberTable').on('click', '.dependents-editBtn', (e) => {
+    let title = "List of dependents";
+    dependentsBeneficiariesModal(e,title);
+});
+
+$('#dependent-memberTable').on('click', '.beneficiaries-editBtn', (e) => {
+    let title = "List of beneficiaries";
+    dependentsBeneficiariesModal(e,title);
+});
+
+$('#dependentModal').on('shown.bs.modal', function (e) {
+    $("#dependentForm").find("input:not([name='membername']):not([name='memid']):not([name='pbno']):not([name='member_id']):not([name='created_by'])").val("");
+    $("#dependentForm").find("select").val("").trigger('change');
+    $("#dependentForm").find("input[name='firstname']").focus();
+
+    dependentBeneficiariesTable = $('#dependentBeneficiariesTable').on('init.dt', function () {
+        $(".dataTables_wrapper").prepend("<div class='dataTables_processing card font-weight-bold d-none' role='status'>Loading Please Wait...<i class='fa fa-spinner fa-spin text-warning'></i></div>");
+    }).DataTable({
+        ordering: false,
+        serverSide: true,
+        dom: 'rtip',
+        pageLength: 5,
+        bInfo: false,
+        columnDefs: [
+            { targets: 0, width: '1%', className: "text-center align-middle font-weight-bold" },
+            { targets: 1, width: '25%', className: "text-left align-middle font-weight-bold" },
+            { targets: 2, width: '8%', className: "text-center align-middle font-weight-bold" },
+            { targets: 3, width: '8%', className: "text-center align-middle font-weight-bold" },
+            { targets: 4, width: '20%', className: "text-left align-middle font-weight-bold" },
+            { targets: 5, width: '3%', className: "text-center align-middle font-weight-bold" },
+        ],
+        ajax: {
+            url: '/admin/dependentBeneficiariesTable',
+            type: 'POST',
+            data: function (d) {
+                d.action = $("#dependentModalLabel").text() == "List of dependents" ? "dependents" : "beneficiaries";
+                d.memid = $("#dependentForm").find("input[name='memid']").val();
+                d.pbno = $("#dependentForm").find("input[name='pbno']").val();
+            },
+            beforeSend: () => {
+                $(".dataTables_processing").removeClass("d-none");
+            },
+            complete: () => {
+                $(".dataTables_processing").addClass("d-none");
+            }
+        }
+    });
+    
+    $('#dependentBeneficiariesTable').on('click', '.editBtn', (e) => {
+        $.LoadingOverlay("show");
+        $.ajax({
+            type: "POST",
+            url: "/admin/getDependentBeneficiary",
+            data: {
+                id: $(e.currentTarget).data("id"),
+                action: $("#dependentModalLabel").text() == "List of dependents" ? "dependents" : "beneficiaries" 
+            },
+            success: (res) => {
+                for(let key in res){
+                    $("#dependentForm").find("input[name='"+key+"']").val(res[key]);
+                    $("#dependentForm").find("select[name='"+key+"']").val(res[key]).trigger("change");
+                }
+                $.LoadingOverlay("hide");
+            }
+        });
+    });
+
+    $('#dependentBeneficiariesTable').on('click', '.deleteBtn', (e) => {
+        $("#dependentForm").find("input:not([name='membername']):not([name='memid']):not([name='pbno']):not([name='member_id']):not([name='created_by'])").val("");
+        $("#dependentForm").find("select").val("").trigger('change');
+        
+        $.LoadingOverlay("show");
+        let action = $("#dependentModalLabel").text() == "List of dependents" ? "dependent" : "beneficiary";
+        $.ajax({
+            type: "POST",
+            url: "/admin/getDependentBeneficiary",
+            data: {
+                id: $(e.currentTarget).data("id"),
+                action: $("#dependentModalLabel").text() == "List of dependents" ? "dependents" : "beneficiaries" 
+            },
+            success: (res) => {
+                $.LoadingOverlay("hide");
+                let name = res.firstname+" "+res.lastname; 
+                Swal.fire({
+                    title: action == "dependent" ? "Remove Dependent" : "Remove Beneficiary",
+                    text: "Are you sure you want to remove " + name + " as a "+ action +"?",
+                    icon: "question",
+                    showCancelButton: true,
+                    showConfirmButton: false,
+                    showDenyButton: true,
+                    denyButtonText: "Remove",
+                    iconColor: "#ea5455",
+                    willOpen: (e) => {
+                        $(".swal2-actions").addClass("w-100").css("justify-content","flex-end");
+                    }
+                }).then((result) => {
+                    if(result.isDenied){
+                        $.LoadingOverlay("show");
+                        $.ajax({
+                            type: "POST",
+                            url: "/admin/deleteDependentBeneficiary",
+                            data:{
+                                id:res.id,
+                                action: $("#dependentModalLabel").text() == "List of dependents" ? "dependents" : "beneficiaries"
+                            },
+                            success: (res) => {
+                                $.LoadingOverlay("hide");
+                                dependentBeneficiariesTable.ajax.reload(null, false);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+
+$('#dependentModal').on('hidden.bs.modal', function (e) {
+    $("#dependentModal").find(".modalTableContainer").find(".table-responsive").remove();
+    dependentTable.ajax.reload(null, false);
+});
+
+$("#dependentForm").submit((e) => {
+    e.preventDefault();
+    $.LoadingOverlay("show");
+    let data = $(e.currentTarget).serializeArray();
+    data.push({
+        name: "action",
+        value: $("#dependentModalLabel").text() == "List of dependents" ? "dependents" : "beneficiaries"
+    });
+    $.ajax({
+        type: "POST",
+        url: "/admin/createDependentBeneficiary",
+        data: data,
+        success: (res) => {
+            $.LoadingOverlay("hide");
+            dependentBeneficiariesTable.ajax.reload(null, false);
+            $("#dependentForm").find("input:not([name='membername']):not([name='memid']):not([name='pbno']):not([name='member_id']):not([name='created_by'])").val("");
+            $("#dependentForm").find("select").val("").trigger('change');
+            $("#dependentForm").find("input[name='firstname']").focus();
         }
     });
 });

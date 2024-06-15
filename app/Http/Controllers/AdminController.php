@@ -17,10 +17,13 @@ use App\Models\RegionModel;
 use App\Models\ProvinceModel;
 use App\Models\CityModel;
 use App\Models\BarangayModel;
+use App\Models\RelationshipModel;
+use App\Models\DependentModel;
+use APp\Models\BeneficiariesModel;
 
 class AdminController extends Controller
 {
-    protected $data, $datatable, $userModel, $memberModel, $regionModel, $provinceModel, $cityModel, $barangayModel, $reportClass;
+    protected $data, $datatable, $userModel, $memberModel, $regionModel, $provinceModel, $cityModel, $barangayModel, $reportClass, $relationshipModel, $dependentModel, $beneficiariesModel;
 
     public function __construct()
     {
@@ -34,6 +37,9 @@ class AdminController extends Controller
         $this->cityModel = new CityModel();
         $this->barangayModel = new BarangayModel();
         $this->reportClass = new ReportClass();
+        $this->relationshipModel = new RelationshipModel();
+        $this->dependentModel = new DependentModel();
+        $this->beneficiariesModel = new BeneficiariesModel();
     }
 
     function Users(){
@@ -77,6 +83,15 @@ class AdminController extends Controller
         $this->data["suffixList"] = $this->memberModel->suffixList();
         $this->data["regionList"] = $this->regionModel->regionList();
         return view('Components.Members',$this->data);
+    }
+
+    function Dependents(){
+        $this->data["titlePage"] = "MEMBER'S INFO | Dependents and Beneficiaries";
+        $this->data["tab"] = "dependents";
+        $this->data["memberTypeList"] = $this->memberModel->memberTypeList();
+        $this->data["suffixList"] = $this->memberModel->suffixList();
+        $this->data["relationshipList"] = $this->relationshipModel->relationshipList();
+        return view('Components.Dependents',$this->data);
     }
 
     function Logout(Request $request){
@@ -159,5 +174,37 @@ class AdminController extends Controller
 
     function generateReport(Request $request){
         return $this->reportClass->generateReport($request->all());
+    }
+
+    function dependentTable(Request $request){
+        return $this->datatable->dependentTable($request->all());
+    }
+
+    function createDependentBeneficiary(Request $request){
+        if($request->action == "dependents"){
+            return $this->dependentModel->addDependent($request->all());
+        }else{
+            return $this->beneficiariesModel->addBeneficiary($request->all());
+        }        
+    }
+
+    function dependentBeneficiariesTable(Request $request){
+        return $this->datatable->dependentBeneficiariesTable($request->all());
+    }
+
+    function getDependentBeneficiary(Request $request){
+        if($request->action == "dependents"){
+            return $this->dependentModel->find($request->id);
+        }else{
+            return $this->beneficiariesModel->find($request->id);
+        }       
+    }
+
+    function deleteDependentBeneficiary(Request $request){
+        if($request->action == "dependents"){
+            return $this->dependentModel->find($request->id)->delete();
+        }else{
+            return $this->beneficiariesModel->find($request->id)->delete();
+        } 
     }
 }

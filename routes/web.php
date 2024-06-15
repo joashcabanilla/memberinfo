@@ -32,6 +32,7 @@ Route::prefix('admin')->middleware(['auth'])->group(
         Route::get('/users', [AdminController::class, 'Users'])->name('admin.users');
         Route::get('/members', [AdminController::class, 'Members'])->name('admin.members');
         Route::get('/maintenance', [AdminController::class, 'Maintenance'])->name('admin.maintenance');
+        Route::get('/dependents', [AdminController::class, 'Dependents'])->name('admin.dependents');
 
         //post route
         Route::post('/logout', [AdminController::class, 'Logout']);
@@ -47,6 +48,11 @@ Route::prefix('admin')->middleware(['auth'])->group(
         Route::post('/createUpdateMember', [AdminController::class, 'createUpdateMember']);
         Route::post('/getMember', [AdminController::class, 'getMember']);
         Route::post('/generateReport', [AdminController::class, 'generateReport'])->name('admin.report');
+        Route::post('/dependentTable', [AdminController::class, 'dependentTable']);
+        Route::post('/createDependentBeneficiary', [AdminController::class, 'createDependentBeneficiary']);
+        Route::post('/getDependentBeneficiary', [AdminController::class, 'getDependentBeneficiary']);
+        Route::post('/deleteDependentBeneficiary', [AdminController::class, 'deleteDependentBeneficiary']);
+        Route::post('/dependentBeneficiariesTable', [AdminController::class, 'dependentBeneficiariesTable']);
     }
 );
 
