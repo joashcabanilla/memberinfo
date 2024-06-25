@@ -55,4 +55,3 @@ Route::prefix('admin')->middleware(['auth'])->group(
         Route::post('/dependentBeneficiariesTable', [AdminController::class, 'dependentBeneficiariesTable']);
     }
 );
-

@@ -122,7 +122,7 @@
                         <div class="col-lg-4 col-md-4 col-sm-12">
                             <label for="dependent-middlename">Middle Name</label>
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="Middle Name *" id="dependent-middlename" name="middlename" autocomplete="false">
+                                <input type="text" class="form-control" placeholder="Middle Name" id="dependent-middlename" name="middlename" autocomplete="false">
                                 <div class="invalid-feedback font-weight-bold"></div>
                             </div>
                         </div>

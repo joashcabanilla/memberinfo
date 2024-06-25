@@ -65,6 +65,8 @@ class AdminController extends Controller
             "ListOfEncodedMembers" => "List Of Encoded Members",
             "ListOfMembersDuplicate" => "List Of Members Duplicate",
             "ListOfMembersWithUpdatedAddress" => "List Of Members With Updated Address",
+            "ListOfDependentsAndBeneficiaries" => "List Of Dependents And Beneficiaries",
+            "DependentsAndBeneficiariesEncodedTally" => "Dependents And Beneficiaries Encoded Tally",
         ];
 
         $userList = $this->userModel->getUser();

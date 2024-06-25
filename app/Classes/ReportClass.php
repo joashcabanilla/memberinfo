@@ -10,20 +10,24 @@ use App\Models\RegionModel;
 use App\Models\ProvinceModel;
 use App\Models\CityModel;
 use App\Models\BarangayModel;
+use App\Models\DependentModel;
+use App\Models\BeneficiariesModel;
 
 class ReportClass
 {
 
-    protected $userModel, $memberModel, $regionModel, $provinceModel, $cityModel, $barangayModel;
+    protected $userModel, $memberModel, $regionModel, $provinceModel, $cityModel, $barangayModel, $dependentModel,  $beneficiariesModel;
 
     function __construct()
     {
         $this->userModel = new User();
         $this->memberModel = new MemberModel();
-        $this->regionModel = new regionModel();
-        $this->provinceModel = new provinceModel();
-        $this->cityModel = new cityModel();
-        $this->barangayModel = new barangayModel();
+        $this->regionModel = new RegionModel();
+        $this->provinceModel = new ProvinceModel();
+        $this->cityModel = new CityModel();
+        $this->barangayModel = new BarangayModel();
+        $this->dependentModel = new DependentModel();
+        $this->beneficiariesModel = new BeneficiariesModel();
     }
 
     function generateReport($data){
@@ -39,6 +43,14 @@ class ReportClass
 
             case "ListOfMembersWithUpdatedAddress":
                 return $this->ListOfMembersWithUpdatedAddress($data);
+            break;
+
+            case "ListOfDependentsAndBeneficiaries":
+                return $this->ListOfDependentsAndBeneficiaries($data);
+            break;
+
+            case "DependentsAndBeneficiariesEncodedTally":
+                return $this->DependentsAndBeneficiariesEncodedTally($data);
             break;
         }
     }
@@ -273,6 +285,73 @@ class ReportClass
             $var["title"] = "List Of Members";
             $var["memberList"] = $memberList;
             return response()->make(view("Report.Excel.ListOfMembersWithUpdatedAddress",$var), '200'); 
+        }
+    }
+
+    private function ListOfDependentsAndBeneficiaries($data){
+        $dependentsList = $beneficiariesList = array();
+        
+        foreach($this->dependentModel->get() as $dependent){
+            $dependentsList[$dependent->id] = [
+                "memid" => $dependent->memid,
+                "pbno" => $dependent->pbno,
+                "firstname" => $dependent->firstname,
+                "middlename" => $dependent->middlename,
+                "lastname" => $dependent->lastname,
+                "suffix" => $dependent->suffix,
+                "birthdate" => !empty($dependent->birthdate) ? date("m/d/Y", strtotime($dependent->birthdate)) : "",
+                "contact_no" => $dependent->contact_no,
+                "relationship" => $dependent->relationship,
+            ];
+        }
+
+        foreach($this->beneficiariesModel->get() as $beneficiaries){
+            $beneficiariesList[$beneficiaries->id] = [
+                "memid" => $beneficiaries->memid,
+                "pbno" => $beneficiaries->pbno,
+                "firstname" => $beneficiaries->firstname,
+                "middlename" => $beneficiaries->middlename,
+                "lastname" => $beneficiaries->lastname,
+                "suffix" => $beneficiaries->suffix,
+                "birthdate" => !empty($beneficiaries->birthdate) ? date("m/d/Y", strtotime($beneficiaries->birthdate)) : "",
+                "contact_no" => $beneficiaries->contact_no,
+                "relationship" => $beneficiaries->relationship,
+            ];
+        }
+
+        if($data->format == "excel"){
+            $var = (array) $data;
+            $var["title"] = "Dependents And Beneficiaries";
+            $var["dependentsList"] = $dependentsList;
+            $var["beneficiariesList"] = $beneficiariesList;
+            return response()->make(view("Report.Excel.ListOfDependentsAndBeneficiaries",$var), '200'); 
+        }
+    }
+
+    private function DependentsAndBeneficiariesEncodedTally($data){
+        $dependentsList = $beneficiariesList = $userList = array();
+
+        foreach($this->userModel->getUser() as $user){
+            $userList[$user->id] = ucwords(strtolower($user->name));
+        }
+
+        foreach($this->dependentModel->get() as $dependent){
+            $createdDate = date("m-d-Y", strtotime($dependent->created_at));
+            $dependentsList[$dependent->created_by][$createdDate][] = $dependent->id; 
+        }
+
+        foreach($this->beneficiariesModel->get() as $beneficiaries){
+            $createdDate = date("m-d-Y", strtotime($beneficiaries->created_at));
+            $beneficiariesList[$beneficiaries->created_by][$createdDate][] = $beneficiaries->id; 
+        }
+        
+        if($data->format == "excel"){
+            $var = (array) $data;
+            $var["title"] = "Summary of Encoding";
+            $var["dependentsList"] = $dependentsList;
+            $var["beneficiariesList"] = $beneficiariesList;
+            $var["userList"] = $userList;
+            return response()->make(view("Report.Excel.DependentsAndBeneficiariesEncodedTally",$var), '200'); 
         }
     }
 }
