@@ -109,11 +109,13 @@
         $sheet1->writeNumber($r,$startC,$totalCount,$subheaderB);$startC++;
 
         $c+=3;
-        $lastR = $r;
+        $lastR[] = $r;
         $r = $startR;
         if($userCount > 2){
             $c = 0;
-            $r = $lastR + 2;
+            rsort($lastR);
+            $r = $lastR[0] + 2;
+            $lastR = [];
             $userCount = 0;
         }
     }
@@ -134,7 +136,8 @@
         ['DATE',12],
         ['TOTAL',12]
     ];
-
+    $lastR = [];
+    
     foreach($beneficiariesList as $userId => $beneficiaries){
         $userCount++;
         $startR = $r;
@@ -166,11 +169,13 @@
         $sheet2->writeNumber($r,$startC,$totalCount,$subheaderB);$startC++;
 
         $c+=3;
-        $lastR = $r;
+        $lastR[] = $r;
         $r = $startR;
         if($userCount > 2){
             $c = 0;
-            $r = $lastR + 2;
+            rsort($lastR);
+            $r = $lastR[0] + 2;
+            $lastR = [];
             $userCount = 0;
         }
     }
