@@ -108,12 +108,12 @@ $("#selectReport").change((e) => {
     }
 });
 
-$("#memid_pbno_correctionBtn").click((e) => {
-    $.ajax({
-        type: "POST",
-        url: "/admin/updatePbNoMemId",
-        success: (res) => {
+// $("#memid_pbno_correctionBtn").click((e) => {
+//     $.ajax({
+//         type: "POST",
+//         url: "/admin/updatePbNoMemId",
+//         success: (res) => {
             
-        }
-    });
-});
+//         }
+//     });
+// });

@@ -116,11 +116,11 @@
                                                 <button class="btn btn-lg btn-primary font-weight-bold float-right" type="submit">Generate</button>
                                             </div>
                                         </div>
-                                        <div class="col-12 mt-3">
+                                        {{-- <div class="col-12 mt-3">
                                             <div class="form-group">
                                                 <a class="btn btn-lg btn-primary font-weight-bold float-right" id="memid_pbno_correctionBtn">UPDATE</a>
                                             </div>
-                                        </div>
+                                        </div> --}}
                                     </div>
                                 </form>
                             </div>

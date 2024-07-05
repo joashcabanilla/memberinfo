@@ -236,16 +236,16 @@ class AdminController extends Controller
         // }
 
         //correction for memid and pbno in dependents table
-        $memidList = $pbnoList = array();
-        foreach($this->dependentModel->get() as $depend){
-            $memidList[] = $depend->incorrect_memid;
-            $pbnoList[] = $depend->incorrect_pbno;
-        }
-        foreach($this->memberModel->whereIn("incorrect_memid", $memidList)->whereIn("incorrect_pbno",$pbnoList)->get() as $member){
-                $this->dependentModel->where("incorrect_memid", $member->incorrect_memid)->where("incorrect_pbno", $member->incorrect_pbno)->update([
-                    "memid" => $member->memid,
-                    "pbno" => $member->pbno
-                ]);
-        }
+        // $memidList = $pbnoList = array();
+        // foreach($this->dependentModel->get() as $depend){
+        //     $memidList[] = $depend->incorrect_memid;
+        //     $pbnoList[] = $depend->incorrect_pbno;
+        // }
+        // foreach($this->memberModel->whereIn("incorrect_memid", $memidList)->whereIn("incorrect_pbno",$pbnoList)->get() as $member){
+        //         $this->dependentModel->where("incorrect_memid", $member->incorrect_memid)->where("incorrect_pbno", $member->incorrect_pbno)->update([
+        //             "memid" => $member->memid,
+        //             "pbno" => $member->pbno
+        //         ]);
+        // }
     }
 }
