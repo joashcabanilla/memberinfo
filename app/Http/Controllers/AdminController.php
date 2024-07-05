@@ -215,7 +215,7 @@ class AdminController extends Controller
     function updatePbNoMemId(Request $request){
         //correction for memid and pbno in members table
         foreach($this->correctionModel->get() as $correction){
-            $this->memberModel->where("id", $correction->id)->whereNotNull("memid")->update([
+            $this->memberModel->where("id", $correction->id)->whereNull("memid")->update([
                 "memid" => $correction->memid,
                 "pbno" => $correction->pbno
             ]);
