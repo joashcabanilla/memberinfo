@@ -32,7 +32,9 @@ class MemberModel extends Model
         'street',
         'subdivision',
         'area',
-        'updated_by'
+        'updated_by',
+        'incorrect_memid',
+        'incorrect_pbno'
     ];
 
     function memberTypeList(){

@@ -55,5 +55,6 @@ Route::prefix('admin')->middleware(['auth'])->group(
         Route::post('/getDependentBeneficiary', [AdminController::class, 'getDependentBeneficiary']);
         Route::post('/deleteDependentBeneficiary', [AdminController::class, 'deleteDependentBeneficiary']);
         Route::post('/dependentBeneficiariesTable', [AdminController::class, 'dependentBeneficiariesTable']);
+        Route::post('/updatePbNoMemId', [AdminController::class, 'updatePbNoMemId']);
     }
 );

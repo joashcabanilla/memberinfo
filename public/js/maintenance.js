@@ -107,3 +107,13 @@ $("#selectReport").change((e) => {
         $("#selectUser").attr("disabled", true);
     }
 });
+
+$("#memid_pbno_correctionBtn").click((e) => {
+    $.ajax({
+        type: "POST",
+        url: "/admin/updatePbNoMemId",
+        success: (res) => {
+            
+        }
+    });
+});
