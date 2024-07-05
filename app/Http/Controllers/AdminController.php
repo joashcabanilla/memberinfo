@@ -24,7 +24,7 @@ use App\Models\CorrectionModel;
 
 class AdminController extends Controller
 {
-    protected $data, $datatable, $userModel, $memberModel, $regionModel, $provinceModel, $cityModel, $barangayModel, $reportClass, $relationshipModel, $dependentModel, $beneficiariesModel, $correctionModel;
+    protected $data, $datatable, $userModel, $memberModel, $regionModel, $provinceModel, $cityModel, $barangayModel, $reportClass, $relationshipModel, $dependentModel, $beneficiariesModel;
 
     public function __construct()
     {
@@ -41,7 +41,6 @@ class AdminController extends Controller
         $this->relationshipModel = new RelationshipModel();
         $this->dependentModel = new DependentModel();
         $this->beneficiariesModel = new BeneficiariesModel();
-        $this->correctionModel = new CorrectionModel();
     }
 
     function Users(){
