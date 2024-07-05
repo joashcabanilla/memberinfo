@@ -23,6 +23,7 @@ class BeneficiariesModel extends Model
         'birthdate',
         'relationship',
         'contact_no',
+        'created_by',
     ]; 
 
     function beneficiariesNumber(){
