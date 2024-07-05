@@ -24,8 +24,6 @@ class DependentModel extends Model
         'relationship',
         'contact_no',
         'created_by',
-        'incorrect_memid',
-        'incorrect_pbno'
     ];
     
     function dependentsNumber(){

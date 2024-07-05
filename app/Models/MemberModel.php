@@ -33,8 +33,6 @@ class MemberModel extends Model
         'subdivision',
         'area',
         'updated_by',
-        'incorrect_memid',
-        'incorrect_pbno'
     ];
 
     function memberTypeList(){
