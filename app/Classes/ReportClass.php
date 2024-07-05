@@ -289,8 +289,12 @@ class ReportClass
     }
 
     private function ListOfDependentsAndBeneficiaries($data){
-        $dependentsList = $beneficiariesList = array();
+        $memberList = $dependentsList = $beneficiariesList = array();
         
+        foreach($this->memberModel->get() as $member){
+            $memberList[$member->memid."-".$member->pbno] = $member->firstname ." ". $member->middlename ." ". $member->lastname ." ". $member->suffix; 
+        }
+
         foreach($this->dependentModel->get() as $dependent){
             $dependentsList[$dependent->id] = [
                 "memid" => $dependent->memid,
@@ -302,6 +306,7 @@ class ReportClass
                 "birthdate" => !empty($dependent->birthdate) ? date("m/d/Y", strtotime($dependent->birthdate)) : "",
                 "contact_no" => $dependent->contact_no,
                 "relationship" => $dependent->relationship,
+                "fullname" => $memberList[$dependent->memid."-".$dependent->pbno]
             ];
         }
 
@@ -316,6 +321,7 @@ class ReportClass
                 "birthdate" => !empty($beneficiaries->birthdate) ? date("m/d/Y", strtotime($beneficiaries->birthdate)) : "",
                 "contact_no" => $beneficiaries->contact_no,
                 "relationship" => $beneficiaries->relationship,
+                "fullname" => $memberList[$beneficiaries->memid."-".$beneficiaries->pbno]
             ];
         }
 

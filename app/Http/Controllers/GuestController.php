@@ -23,7 +23,16 @@ class GuestController extends Controller
         return view('Components.Login',$this->data);
     }
 
+    function Email(){
+        $this->data["titlePage"] = "MEMBER'S INFO | Email";
+        return view('Components.Email',$this->data);
+    }
+
     function Login(Request $request){
         return $this->userModel->login($request);
+    }
+
+    function searchMember(Request $request){
+        
     }
 }

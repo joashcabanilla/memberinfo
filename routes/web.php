@@ -20,9 +20,11 @@ Route::middleware(['guest'])->group(
     function(){
         //get route
         Route::get('/', [GuestController::class, 'Index'])->name('guest.index');
+        Route::get('/email', [GuestController::class, 'Email'])->name('guest.email');
 
         //post route
         Route::post('login', [GuestController::class, 'Login']);
+        Route::post('searchMember', [GuestController::class, 'searchMember']);
     }
 );
 

@@ -24,3 +24,18 @@ $("#showPassword").change((e)  => {
         $("#password").attr("type", "password");
     }
 });
+
+$("#emailForm").submit((e) => {
+    e.preventDefault();
+    if($(e.currentTarget).find("button").text() == "Search"){
+        $.ajax({
+            type: "POST",
+            url: "searchMember",
+            data: $(e.currentTarget).serializeArray(),
+            success: (res) => {
+            }
+        });
+    }else{
+
+    }
+});
