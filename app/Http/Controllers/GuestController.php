@@ -57,7 +57,12 @@ class GuestController extends Controller
                 $result["status"] = "failed";
                 $result["error"] = "Incorrect first name or last name";
             }else{
-                $result["member"] = $searchMember;
+                if(!empty($searchMember->email)){
+                    $result["status"] = "failed";
+                    $result["error"] = "The member already has an email address.";
+                }else{
+                    $result["member"] = $searchMember;
+                }
             }
             
         }else{

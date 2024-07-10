@@ -44,7 +44,7 @@ $("#emailForm").submit((e) => {
                     $(".searchMember-error").removeClass("d-none").text(res.error);
                     setTimeout(() => {
                         $(".searchMember-error").addClass("d-none");
-                    },3000);
+                    },5000);
                 }
             }
         });
@@ -73,7 +73,7 @@ $("#emailForm").submit((e) => {
                     $(".searchMember-error").removeClass("d-none").text(res.error.email[0]);
                     setTimeout(() => {
                         $(".searchMember-error").addClass("d-none");
-                    },3000);
+                    },5000);
                 }
             }
         });
