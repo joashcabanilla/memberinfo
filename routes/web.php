@@ -25,6 +25,7 @@ Route::middleware(['guest'])->group(
         //post route
         Route::post('login', [GuestController::class, 'Login']);
         Route::post('searchMember', [GuestController::class, 'searchMember']);
+        Route::post('updateEmail', [GuestController::class, 'updateEmail']);
     }
 );
 

@@ -32,6 +32,7 @@ class MemberModel extends Model
         'street',
         'subdivision',
         'area',
+        'email',
         'updated_by',
     ];
 

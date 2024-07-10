@@ -5,6 +5,9 @@
             <div class="card card-outline card-primary">
                 <div class="card-header text-center">
                     <img src="{{asset('image/1.png')}}" alt="logo" width="250" />
+                    <div class="alert alert-danger mt-2 mb-0 error-text d-none font-weight-bold searchMember-error" role="alert">
+                        text message error
+                    </div>
                 </div>
                 <div class="card-body">
                     <p class="text-monospace font-weight-bold mb-2">Please enter your PbNo or MemID and Name to search for your account.</p>
@@ -20,7 +23,7 @@
                         </div>
 
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="First Name *" id="firstname" name="firstname" autocomplete="false" required>
+                            <input type="text" class="form-control text-capitalize" placeholder="First Name *" id="firstname" name="firstname" autocomplete="false" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-user"></span>
@@ -29,7 +32,7 @@
                         </div>
                         
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Last Name *" id="lastname" name="lastname" autocomplete="false" required>
+                            <input type="text" class="form-control text-capitalize" placeholder="Last Name *" id="lastname" name="lastname" autocomplete="false" required>
                             <div class="input-group-append">
                                 <div class="input-group-text">
                                     <span class="fas fa-user"></span>
