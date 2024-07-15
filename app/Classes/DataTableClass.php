@@ -2,6 +2,7 @@
 
 namespace App\Classes;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 //Model
 use App\Models\User;
@@ -158,6 +159,8 @@ class DataTableClass
     function memberTable($data){
         $var = (object) $data;
         $query = $this->memberModel->memberTable($var);
+        $user = Auth::user()->user_type;
+
         $columns = [
             ['db' => 'id', 'dt' => 0,'orderable' => false, 'sortnum'=>true],
 
@@ -179,9 +182,16 @@ class DataTableClass
 
             ['db' => 'full_address', 'dt' => 5],
 
-            ['db' => 'id', 'dt' => 6, 'formatter' => function($d,$drow){
+            ['db' => 'id', 'dt' => 6, 'formatter' => function($d,$drow) use($user){
                 $status = $drow["updated_by"] != 0 ? "updated" : "notupdated";
-                return "<button type='submit' class='btn btn-sm btn-primary elevation-1 editBtn' data-status='".$status."' data-id='".$d."'><i class='fas fa-edit' aria-hidden='true'></i></button>";
+                $deleteBtn = "";
+                $id = "";
+                if($user == "admin"){
+                    $deleteBtn = "<button type='submit' class='btn btn-sm btn-primary elevation-1 deleteBtn mt-1' data-status='".$status."' data-id='".$d."'><i class='fas fa-trash' aria-hidden='true'></i></button>";
+                    $id = "<p>".$d."<p>";
+                }
+
+                return "<button type='submit' class='btn btn-sm btn-primary elevation-1 editBtn' data-status='".$status."' data-id='".$d."'><i class='fas fa-edit' aria-hidden='true'></i></button>".$deleteBtn.$id;
             }],
         ];
 

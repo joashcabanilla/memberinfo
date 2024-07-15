@@ -547,6 +547,37 @@ $('#memberTable').on('click', '.editBtn', (e) => {
     });
 });
 
+$('#memberTable').on('click', '.deleteBtn', (e) => {
+    let memberId = $(e.currentTarget).data("id");
+
+    Swal.fire({
+        title: "Delete Member",
+        text: "Are you sure you want to delete " + memberId +"?",
+        icon: "question",
+        showCancelButton: true,
+        showConfirmButton: false,
+        showDenyButton: true,
+        denyButtonText: "Delete",
+        iconColor: "#ea5455",
+        willOpen: (e) => {
+            $(".swal2-actions").addClass("w-100").css("justify-content","flex-end");
+        }
+    }).then((result) => {
+        if(result.isDenied){
+            $.LoadingOverlay("show");
+            $.ajax({
+                type: "POST",
+                url: "/admin/deleteMember",
+                data:{id:memberId},
+                success: (res) => {
+                    $.LoadingOverlay("hide");
+                    memberTable.ajax.reload(null, false);
+                }
+            });
+        }
+    });
+});
+
 let dependentTable = $('#dependent-memberTable').on('init.dt', function () {
     $(".dataTables_wrapper").prepend("<div class='dataTables_processing card font-weight-bold d-none' role='status'>Loading Please Wait...<i class='fa fa-spinner fa-spin text-warning'></i></div>");
 }).DataTable({

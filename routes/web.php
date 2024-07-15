@@ -49,6 +49,7 @@ Route::prefix('admin')->middleware(['auth'])->group(
         Route::post('/getCities', [AdminController::class, 'getCities']);
         Route::post('/getBarangay', [AdminController::class, 'getBarangay']);
         Route::post('/createUpdateMember', [AdminController::class, 'createUpdateMember']);
+        Route::post('/deleteMember', [AdminController::class, 'deleteMember']);
         Route::post('/getMember', [AdminController::class, 'getMember']);
         Route::post('/generateReport', [AdminController::class, 'generateReport'])->name('admin.report');
         Route::post('/dependentTable', [AdminController::class, 'dependentTable']);

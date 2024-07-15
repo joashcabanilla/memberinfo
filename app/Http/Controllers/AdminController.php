@@ -171,6 +171,10 @@ class AdminController extends Controller
         return $this->memberModel->createUpdateMember($request->all());
     }
 
+    function deleteMember(Request $request){
+        return $this->memberModel->find($request->id)->delete();
+    }
+
     function getMember(Request $request){
         return $this->memberModel->getMember($request->id);
     }
