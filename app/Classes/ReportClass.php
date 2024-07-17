@@ -52,6 +52,10 @@ class ReportClass
             case "DependentsAndBeneficiariesEncodedTally":
                 return $this->DependentsAndBeneficiariesEncodedTally($data);
             break;
+
+            case "ListOfMembersEmailAddresses":
+                return $this->ListOfMembersEmailAddresses($data);
+            break;
         }
     }
 
@@ -358,6 +362,29 @@ class ReportClass
             $var["beneficiariesList"] = $beneficiariesList;
             $var["userList"] = $userList;
             return response()->make(view("Report.Excel.DependentsAndBeneficiariesEncodedTally",$var), '200'); 
+        }
+    }
+
+    private function ListOfMembersEmailAddresses($data){
+        $memberList = array();
+        $members = $this->memberModel->whereNotNull("email")->get(); 
+        foreach($members as $member){
+            $memberList[] = [
+                "memid" => $member->memid,
+                "pbno" => $member->pbno,
+                "lastname" => $member->lastname,
+                "firstname" => $member->firstname,
+                "middlename" => $member->middlename,
+                "email" => $member->email,
+                "suffix" => $member->suffix
+            ];
+        }   
+
+        if($data->format == "excel"){
+            $var = (array) $data;
+            $var["title"] = "Members Email Address";
+            $var["memberList"] = $memberList;
+            return response()->make(view("Report.Excel.ListOfMembersEmailAddresses",$var), '200'); 
         }
     }
 }

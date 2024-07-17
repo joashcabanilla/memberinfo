@@ -68,6 +68,7 @@ class AdminController extends Controller
             "ListOfMembersWithUpdatedAddress" => "List Of Members With Updated Address",
             "ListOfDependentsAndBeneficiaries" => "List Of Dependents And Beneficiaries",
             "DependentsAndBeneficiariesEncodedTally" => "Dependents And Beneficiaries Encoded Tally",
+            "ListOfMembersEmailAddresses" => "List of members' email addresses",
         ];
 
         $userList = $this->userModel->getUser();

@@ -103,7 +103,7 @@ $("#importDatabaseForm").submit((e) => {
 $("#selectReport").change((e) => {
     let report = $(e.currentTarget).val();
     $("#selectUser").attr("disabled", false).val("");
-    if(report == "ListOfMembersDuplicate" || report == "ListOfMembersWithUpdatedAddress" || report == "ListOfDependentsAndBeneficiaries" || report == "DependentsAndBeneficiariesEncodedTally"){
+    if(report == "ListOfMembersDuplicate" || report == "ListOfMembersWithUpdatedAddress" || report == "ListOfDependentsAndBeneficiaries" || report == "DependentsAndBeneficiariesEncodedTally" || report == "ListOfMembersEmailAddresses"){
         $("#selectUser").attr("disabled", true);
     }
 });
