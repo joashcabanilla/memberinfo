@@ -46,9 +46,31 @@ class GuestController extends Controller
         
         if(count($memberList) > 0){
             foreach($memberList as $member){
-                $firstname = strtolower(str_replace(".","",$member->firstname));
-                $lastname = strtolower(str_replace(".","",$member->lastname));
-                if($firstname == strtolower($request->firstname) && $lastname == strtolower($request->lastname)){
+                $firstname = strtolower($member->firstname);
+                $firstname = str_replace(".","",$firstname);
+                $firstname = str_replace(",","", $firstname);
+                $firstname = str_replace("itf","", $firstname);
+                $firstname = str_replace(" ","", $firstname);
+
+                $lastname = strtolower($member->lastname);
+                $lastname = str_replace(".","",$lastname);
+                $lastname = str_replace(",","", $lastname);
+                $lastname = str_replace("itf","", $lastname);
+                $lastname = str_replace(" ","", $lastname);
+
+                $inputFirstname = strtolower($request->firstname);
+                $inputFirstname = str_replace(".","",$inputFirstname);
+                $inputFirstname = str_replace(",","", $inputFirstname);
+                $inputFirstname = str_replace("itf","", $inputFirstname);
+                $inputFirstname = str_replace(" ","", $inputFirstname);
+
+                $inputLastname = strtolower($request->lastname);
+                $inputLastname = str_replace(".","",$inputLastname);
+                $inputLastname = str_replace(",","", $inputLastname);
+                $inputLastname = str_replace("itf","", $inputLastname);
+                $inputLastname = str_replace(" ","", $inputLastname);
+
+                if($firstname == $inputFirstname && $lastname == $inputLastname){
                     $searchMember = $member;
                 }
             }
