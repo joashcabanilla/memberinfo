@@ -12,11 +12,12 @@ use App\Models\CityModel;
 use App\Models\BarangayModel;
 use App\Models\DependentModel;
 use App\Models\BeneficiariesModel;
+use App\Models\BranchModel;
 
 class ReportClass
 {
 
-    protected $userModel, $memberModel, $regionModel, $provinceModel, $cityModel, $barangayModel, $dependentModel,  $beneficiariesModel;
+    protected $userModel, $memberModel, $regionModel, $provinceModel, $cityModel, $barangayModel, $dependentModel,  $beneficiariesModel, $branchModel;
 
     function __construct()
     {
@@ -28,6 +29,7 @@ class ReportClass
         $this->barangayModel = new BarangayModel();
         $this->dependentModel = new DependentModel();
         $this->beneficiariesModel = new BeneficiariesModel();
+        $this->branchModel = new BranchModel();
     }
 
     function generateReport($data){
@@ -97,14 +99,17 @@ class ReportClass
             $duplicateList[] = $duplicate->name;
         }
 
+        $branches = $this->branchModel->allMemberBranches();
 
-        
         foreach($memberInfoList as $member){
             if(in_array($member->name, $duplicateList)){
+                $memid = str_replace(" ","",str_replace(".","",$member->memid));
+                $pbno = str_replace(" ","",str_replace(".","",$member->pbno));
+
                 $memberList[$member->id] = [
                     'member_type' => $member->member_type,
-                    'memid' => $member->memid,
-                    'pbno' => $member->pbno,
+                    'memid' => $memid,
+                    'pbno' => $pbno,
                     'title' => $member->title,
                     'lastname' => $member->lastname,
                     'firstname' => $member->firstname,
@@ -119,6 +124,7 @@ class ReportClass
                     'street' => $member->street,
                     'subdivision' => $member->subdivision,
                     'area' => $member->area,
+                    'branch' => isset($branches[$memid."-".$pbno]) ? $branches[$memid."-".$pbno] : ""
                 ];
             }
         }
@@ -186,16 +192,21 @@ class ReportClass
             $userList[$user->id] = ucwords(strtolower($user->name));
         }
 
+        $branches = $this->branchModel->allMemberBranches();
+
         foreach($memberInfoList as $member){
             $regionName = !empty($member->region_code) ? $regionList[$member->region_code] : "";
             $provinceName = !empty($member->province_code) ? $provinceList[$member->province_code] : "";
             $cityName = !empty($member->citymun_code) ? $cityList[$member->citymun_code] : "";
             $barangayName = !empty($member->barangay_code) ? $barangayList[$member->barangay_code] : "";
-
+            
+            $memid = str_replace(" ","",str_replace(".","",$member->memid));
+            $pbno = str_replace(" ","",str_replace(".","",$member->pbno));
+            
             $memberList[$member->id] = [
                 'member_type' => $member->member_type,
-                'memid' => $member->memid,
-                'pbno' => $member->pbno,
+                'memid' => $memid,
+                'pbno' => $pbno,
                 'title' => $member->title,
                 'lastname' => $member->lastname,
                 'firstname' => $member->firstname,
@@ -214,7 +225,8 @@ class ReportClass
                 'street' => $member->street,
                 'subdivision' => $member->subdivision,
                 'area' => $member->area,
-                'updated_by' => !empty($member->updated_by) ? $userList[$member->updated_by] : ""
+                'updated_by' => !empty($member->updated_by) ? $userList[$member->updated_by] : "",
+                'branch' => isset($branches[$memid."-".$pbno]) ? $branches[$memid."-".$pbno] : ""
             ]; 
 
             if(!empty($member->updated_by)){
@@ -262,11 +274,16 @@ class ReportClass
 
         $memberList = array();
 
+        $branches = $this->branchModel->allMemberBranches();
+
         foreach($memberInfoList as $member){
+            $memid = str_replace(" ","",str_replace(".","",$member->memid));
+            $pbno = str_replace(" ","",str_replace(".","",$member->pbno));
+
             $memberList[$member->id] = [
                 'member_type' => $member->member_type,
-                'memid' => $member->memid,
-                'pbno' => $member->pbno,
+                'memid' => $memid,
+                'pbno' => $pbno,
                 'title' => $member->title,
                 'lastname' => $member->lastname,
                 'firstname' => $member->firstname,
@@ -280,7 +297,8 @@ class ReportClass
                 'unit_floor_no' => $member->unit_floor_no,
                 'street' => $member->street,
                 'subdivision' => $member->subdivision,
-                'area' => $member->area
+                'area' => $member->area,
+                'branch' => isset($branches[$memid."-".$pbno]) ? $branches[$memid."-".$pbno] : ""
             ];
         }
 
@@ -299,10 +317,15 @@ class ReportClass
             $memberList[$member->memid."-".$member->pbno] = $member->firstname ." ". $member->middlename ." ". $member->lastname ." ". $member->suffix; 
         }
 
+        $branches = $this->branchModel->allMemberBranches();
+
         foreach($this->dependentModel->get() as $dependent){
+            $memid = str_replace(" ","",str_replace(".","",$dependent->memid));
+            $pbno = str_replace(" ","",str_replace(".","",$dependent->pbno));
+
             $dependentsList[$dependent->id] = [
-                "memid" => $dependent->memid,
-                "pbno" => $dependent->pbno,
+                "memid" => $memid,
+                "pbno" => $pbno,
                 "firstname" => $dependent->firstname,
                 "middlename" => $dependent->middlename,
                 "lastname" => $dependent->lastname,
@@ -310,14 +333,18 @@ class ReportClass
                 "birthdate" => !empty($dependent->birthdate) ? date("m/d/Y", strtotime($dependent->birthdate)) : "",
                 "contact_no" => $dependent->contact_no,
                 "relationship" => $dependent->relationship,
-                "fullname" => $memberList[$dependent->memid."-".$dependent->pbno]
+                "fullname" => $memberList[$dependent->memid."-".$dependent->pbno],
+                'branch' => isset($branches[$memid."-".$pbno]) ? $branches[$memid."-".$pbno] : ""
             ];
         }
 
         foreach($this->beneficiariesModel->get() as $beneficiaries){
+            $memid = str_replace(" ","",str_replace(".","",$beneficiaries->memid));
+            $pbno = str_replace(" ","",str_replace(".","",$beneficiaries->pbno));
+
             $beneficiariesList[$beneficiaries->id] = [
-                "memid" => $beneficiaries->memid,
-                "pbno" => $beneficiaries->pbno,
+                "memid" => $memid,
+                "pbno" => $pbno,
                 "firstname" => $beneficiaries->firstname,
                 "middlename" => $beneficiaries->middlename,
                 "lastname" => $beneficiaries->lastname,
@@ -325,7 +352,8 @@ class ReportClass
                 "birthdate" => !empty($beneficiaries->birthdate) ? date("m/d/Y", strtotime($beneficiaries->birthdate)) : "",
                 "contact_no" => $beneficiaries->contact_no,
                 "relationship" => $beneficiaries->relationship,
-                "fullname" => $memberList[$beneficiaries->memid."-".$beneficiaries->pbno]
+                "fullname" => $memberList[$beneficiaries->memid."-".$beneficiaries->pbno],
+                'branch' => isset($branches[$memid."-".$pbno]) ? $branches[$memid."-".$pbno] : ""
             ];
         }
 
@@ -368,15 +396,21 @@ class ReportClass
     private function ListOfMembersEmailAddresses($data){
         $memberList = array();
         $members = $this->memberModel->whereNotNull("email")->get(); 
+        $branches = $this->branchModel->allMemberBranches();
+
         foreach($members as $member){
+            $memid = str_replace(" ","",str_replace(".","",$member->memid));
+            $pbno = str_replace(" ","",str_replace(".","",$member->pbno));
+
             $memberList[] = [
-                "memid" => $member->memid,
-                "pbno" => $member->pbno,
+                "memid" => $memid,
+                "pbno" => $pbno,
                 "lastname" => $member->lastname,
                 "firstname" => $member->firstname,
                 "middlename" => $member->middlename,
                 "email" => $member->email,
-                "suffix" => $member->suffix
+                "suffix" => $member->suffix,
+                'branch' => isset($branches[$memid."-".$pbno]) ? $branches[$memid."-".$pbno] : ""
             ];
         }   
 

@@ -69,6 +69,7 @@
         array("First Name",20),
         array("Middle Name",20),
         array("Suffix",5),
+        array("Branch",30),
         array("Email",30),
     );
 
@@ -88,6 +89,7 @@
         $sheet->writeString($r,$c,convertEncoding($member["firstname"]),$normal);$c++;
         $sheet->writeString($r,$c,convertEncoding($member["middlename"]),$normal);$c++;
         $sheet->writeString($r,$c,convertEncoding(strtoupper($member["suffix"])),$normal);$c++;
+        $sheet->writeString($r,$c,$member["branch"],$normal);$c++;
         $sheet->writeString($r,$c,$member["email"],$normal);$c++;
         $r++;
     }

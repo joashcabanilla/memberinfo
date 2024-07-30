@@ -71,7 +71,8 @@
         array('Last Name',20),
         array('First Name',20),
         array('Middle Name',20),
-        array('Suffix',15)
+        array('Suffix',15),
+        array('Branch',30),
     );
 
     $c = $r = 0;
@@ -93,6 +94,7 @@
         $sheet->writeString($r,$c,convertEncoding($data["firstname"]),$normal);$c++;
         $sheet->writeString($r,$c,convertEncoding($data["middlename"]),$normal);$c++;
         $sheet->writeString($r,$c,$data["suffix"],$normal);$c++;
+        $sheet->writeString($r,$c,convertEncoding($data["branch"]),$normal);$c++;
         $r++;
     }
     $xls->close();

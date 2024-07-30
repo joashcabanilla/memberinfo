@@ -79,6 +79,7 @@
         array('First Name',20),
         array('Middle Name',20),
         array('Suffix',15),
+        array('Branch',30),
         array('Region',20),
         array('Province',20),
         array('City',20),
@@ -107,6 +108,7 @@
         $sheet->writeString($r,$c,convertEncoding($data["firstname"]),$normal);$c++;
         $sheet->writeString($r,$c,convertEncoding($data["middlename"]),$normal);$c++;
         $sheet->writeString($r,$c,$data["suffix"],$normal);$c++;
+        $sheet->writeString($r,$c,$data["branch"],$normal);$c++;
         $sheet->writeString($r,$c,convertEncoding($data["regionName"]),$normal);$c++;
         $sheet->writeString($r,$c,convertEncoding($data["provinceName"]),$normal);$c++;
         $sheet->writeString($r,$c,convertEncoding($data["cityName"]),$normal);$c++;

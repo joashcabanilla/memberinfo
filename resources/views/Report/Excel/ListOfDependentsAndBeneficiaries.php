@@ -64,6 +64,7 @@
     $fields = array(
         array("Memid",10),
         array("Pbno",10),
+        array("Branch",30),
         array("Full Name",30),
         array("Last Name",20),
         array("First Name",20),
@@ -86,6 +87,7 @@
         $c = 0;
         $sheet1->writeString($r,$c,$dependent["memid"],$normalC);$c++;
         $sheet1->writeString($r,$c,$dependent["pbno"],$normalC);$c++;
+        $sheet1->writeString($r,$c,$dependent["branch"],$normalC);$c++;
         $sheet1->writeString($r,$c,convertEncoding($dependent["fullname"]),$normal);$c++;
         $sheet1->writeString($r,$c,convertEncoding($dependent["lastname"]),$normal);$c++;
         $sheet1->writeString($r,$c,convertEncoding($dependent["firstname"]),$normal);$c++;
@@ -110,6 +112,7 @@
         $c = 0;
         $sheet2->writeString($r,$c,$beneficiaries["memid"],$normalC);$c++;
         $sheet2->writeString($r,$c,$beneficiaries["pbno"],$normalC);$c++;
+        $sheet2->writeString($r,$c,$beneficiaries["branch"],$normalC);$c++;
         $sheet2->writeString($r,$c,convertEncoding($beneficiaries["fullname"]),$normal);$c++;
         $sheet2->writeString($r,$c,convertEncoding($beneficiaries["lastname"]),$normal);$c++;
         $sheet2->writeString($r,$c,convertEncoding($beneficiaries["firstname"]),$normal);$c++;
