@@ -63,6 +63,7 @@
 
     $sheet = $xls->addWorksheet("Members Email Addresses");
     $fields = array(
+        array("Member Type",20),
         array("Memid",10),
         array("Pbno",10),
         array("Last Name",20),
@@ -83,6 +84,7 @@
 
     foreach($memberList as $member){
         $c = 0;
+        $sheet->writeString($r,$c,$member["member_type"],$normalC);$c++;
         $sheet->writeString($r,$c,$member["memid"],$normalC);$c++;
         $sheet->writeString($r,$c,$member["pbno"],$normalC);$c++;
         $sheet->writeString($r,$c,convertEncoding($member["lastname"]),$normal);$c++;

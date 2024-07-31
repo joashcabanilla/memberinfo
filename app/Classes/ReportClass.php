@@ -403,6 +403,7 @@ class ReportClass
             $pbno = str_replace(" ","",str_replace(".","",$member->pbno));
 
             $memberList[] = [
+                "member_type" => $member->member_type,
                 "memid" => $memid,
                 "pbno" => $pbno,
                 "lastname" => $member->lastname,
