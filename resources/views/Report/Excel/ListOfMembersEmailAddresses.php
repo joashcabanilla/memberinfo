@@ -90,7 +90,7 @@
         $sheet->writeString($r,$c,convertEncoding($member["lastname"]),$normal);$c++;
         $sheet->writeString($r,$c,convertEncoding($member["firstname"]),$normal);$c++;
         $sheet->writeString($r,$c,convertEncoding($member["middlename"]),$normal);$c++;
-        $sheet->writeString($r,$c,convertEncoding(strtoupper($member["suffix"])),$normal);$c++;
+        $sheet->writeString($r,$c,convertEncoding(strtoupper($member["suffix"])),$normalC);$c++;
         $sheet->writeString($r,$c,$member["branch"],$normal);$c++;
         $sheet->writeString($r,$c,$member["email"],$normal);$c++;
         $r++;
